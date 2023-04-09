@@ -4,6 +4,9 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 
 dotenv.config({ path: 'config.env' });
+
+const ApiError = require('./utils/apiError');
+const globalError = require('./middlewares/errorMiddleware');
 const dbConncetion = require('./config/database');
 const categoryRoute = require('./routes/categoryRoute');
 
@@ -31,8 +34,27 @@ if (process.env.NODE_ENV === 'development') {
 // MOUNT ROUTES
 app.use('/api/v1/categories', categoryRoute);
 
+// WORKS WHEN THE URI IS NOT IN THE PREDEFINED URIS
+app.all("*", (req, res, next) => {
+    // CREATE ERROR AND SEND IT TO GLOBAL ERROR HANDLING MIDDLEWARE
+    next(new ApiError(`Can't find this route: ${req.originalUrl}`, 400));
+})
+
+// GLOBAL ERROR HANDLING MIDDLEWARE FOR EXPRESS
+app.use(globalError);
+
 const PORT = process.env.PORT || 8000;
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
     console.log(`App Running on PORT ${PORT}`);
+});
+
+// HANDLING REJECTION OUTSIDE EXPRESS
+// ONCE WE SEE THIS ERROR WE UNDERSTAND THAT IT IS OUT OF EXPRESS, COULD BE WRONG URI DATABASE CONNECTION
+process.on("unhandledRejection", (err) => {
+    console.error(`UnhandledRejection Erorrs: ${err.name} | ${err.message}`);
+    server.close(() => {
+        console.error(`Shutting down....`);
+        process.exit(1);
+    });
 });
