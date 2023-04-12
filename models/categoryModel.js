@@ -19,7 +19,7 @@ const categorySchema = new mongoose.Schema({
     { timestamps: true } // time stamps will create two fields in database, "created at and updated at"
 );
 
-// 2- CREATE MODEL
+// 2- CREATE MODEL 
 const CategoryModel = mongoose.model('Category', categorySchema);
 
 module.exports = CategoryModel;
