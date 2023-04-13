@@ -4,7 +4,6 @@ const ApiError = require('../utils/apiError');
 
 const Category = require('../models/categoryModel');
 
-
 // @desc   Get list of Categories
 // @route  GET /api/v1/categories
 // @access Public
@@ -12,7 +11,7 @@ exports.getCategories = asyncHandler(async (req, res, next) => {
     const page = req.query.page * 1 || 1;
     const limit = req.query.limit * 1 || 5;
     const skip = (page - 1) * limit;
-    const categories = await Category.find({}).skip(skip).limit(limit);
+    const categories = await Category.find({}).skip(skip).limit(limit); // return list of categories
     res.status(200).json({ results: categories.length, data: categories });
 });
 
@@ -23,7 +22,7 @@ exports.getCategory = asyncHandler(async (req, res, next) => {
     const { id } = req.params;
     const category = await Category.findById(id);
     if (!category) {
-        return next(new ApiError(`No category for this id ${id}`, 404));
+        return next(new ApiError(`No Category for This ID: ${id}`, 404));
     }
     res.status(200).json({ data: category });
 });
