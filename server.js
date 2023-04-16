@@ -44,7 +44,7 @@ app.use('/api/v1/products', productRoute);
 app.all("*", (req, res, next) => {
     // CREATE ERROR AND SEND IT TO GLOBAL ERROR HANDLING MIDDLEWARE
     next(new ApiError(`Can't find this route: ${req.originalUrl}`, 400));
-})
+});
 
 // GLOBAL ERROR HANDLING MIDDLEWARE FOR EXPRESS
 app.use(globalError);

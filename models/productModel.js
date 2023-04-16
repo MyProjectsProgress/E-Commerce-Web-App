@@ -31,12 +31,12 @@ const productSchema = new mongoose.Schema(
             type: Number,
             required: true,
             // trim: true,
-            max: [20, "Too Long Product Price"],
+            max: [10000000, "Too Long Product Price"],
         },
         priceAfterDiscount: {
             type: Number,
             trim: true,
-            max: [20, "Too Long Product Price"],
+            max: [10000000, "Too Long Product Price"],
         },
 
         colors: [String],
@@ -48,10 +48,10 @@ const productSchema = new mongoose.Schema(
 
         images: [String],
 
-        categroy: {
+        category: {
             type: mongoose.Schema.ObjectId,
             ref: 'Category',
-            required: [true, "Subcategory must belong to parent category"],
+            required: [true, 'Product must belong to category'],
         },
         subcategory: [{
             type: mongoose.Schema.ObjectId,
