@@ -1,5 +1,7 @@
 const { check } = require('express-validator');
 const validatorMiddleware = require('../../middlewares/validatorMiddleware');
+const Catgeroy = require('../../models/categoryModel');
+const SubCategory = require('../../models/subCategoryModel');
 
 exports.createProductValidator = [
     check('title')
@@ -32,8 +34,10 @@ exports.createProductValidator = [
         .toFloat()
         .isNumeric()
         .withMessage('Product Price After Discount Must Be a Number')
-        .custom((value, { req }) => { // value comes from body
-            if (req.body.price <= value) {
+        // Parameters: price after discount and req is destructing the request so we have the whole request paramters.
+        // flashing error if the price after discount is bigger than the price before discount.
+        .custom((priceAfterDiscountBody, { req }) => {
+            if (req.body.price <= priceAfterDiscountBody) {
                 throw new Error('Price After Discount Must Be Lower Than Price');
             }
             return true;
@@ -44,11 +48,34 @@ exports.createProductValidator = [
         .withMessage('Images Should Be Array of Strings'),
     check('category')
         .notEmpty()
-        .withMessage('Invalid ID Format'),
-    check('subcategory')
+        .withMessage('Invalid ID Format')
+        .custom((categoryId) => Catgeroy.findById(categoryId).then((category) => {
+            if (!category) {
+                return Promise.reject(new Error(`No Category For This ID ${categoryId}`));
+            }
+        })
+        ),
+    check('subcategories')
         .optional()
         .isMongoId()
-        .withMessage('Invalid ID Format'),
+        .withMessage('Invalid ID Format')
+        // Making sure that the retrived idscontains the subcategories id that comes from creation request.
+        .custom((subcategoriesIds) => SubCategory.find({ _id: { $exists: true, $in: subcategoriesIds } }).then((result) => {
+            if (result.length < 1 || result.length !== subcategoriesIds.length) {
+                return Promise.reject(new Error(`Invalid Subcategories IDs`));
+            }
+        }))
+        // Making sure that the added subcategories belong to the category given in the request.
+        .custom((BodySubCategoriesIDs, { req }) => SubCategory.find({ category: req.body.category }).then((subcategories => {
+            const subCategoriesIDinDB = [];
+            subcategories.forEach((subCategory) => {
+                subCategoriesIDinDB.push(subCategory._id.toString());
+            });
+            const checker = (target, arr) => BodySubCategoriesIDs.every(ID => arr.includes(ID));
+            if (!checker(BodySubCategoriesIDs, subCategoriesIDinDB)) {
+                return Promise.reject(new Error(`Subcategories IDs Doesn't Belong To The Category ID`));
+            }
+        }))),
     check('brand')
         .optional()
         .isMongoId()
