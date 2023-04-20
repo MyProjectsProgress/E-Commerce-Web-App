@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 // 1- CREATE SCHEMA
-const brandModel = new mongoose.Schema({
+const brandSchema = new mongoose.Schema({
     name: {
         type: String,
         required: [true, 'Brand is required'],
@@ -20,6 +20,6 @@ const brandModel = new mongoose.Schema({
 );
 
 // 2- CREATE MODEL 
-const BrandModel = mongoose.model('Brand', brandModel);
+const BrandModel = mongoose.model('Brand', brandSchema);
 
 module.exports = BrandModel;
