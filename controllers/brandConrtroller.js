@@ -1,30 +1,10 @@
-const slugify = require('slugify');
-const asyncHandler = require('express-async-handler');
-const ApiError = require('../utils/apiError');
-const ApiFeatures = require('../utils/apiFeatures');
 const Brand = require('../models/brandModel');
 const factory = require('./zHandlersFactory');
-
 
 // @desc   Get list of Brands
 // @route  GET /api/v1/brands
 // @access Public
-exports.getBrands = asyncHandler(async (req, res, next) => {
-    // Build Query
-    const documentCounts = await Brand.countDocuments();
-    const apiFeatures = new ApiFeatures(Brand.find(), req.query)
-        .filter()
-        .paginate(documentCounts)
-        .sort()
-        .limitFileds()
-        .search();
-
-    // Excute Query
-    const { mongooseQuery, paginationResult } = apiFeatures;
-    const brands = await mongooseQuery;
-
-    res.status(200).json({ results: brands.length, paginationResult, data: brands });
-});
+exports.getBrands = factory.getAll(Brand);
 
 // @desc   Get Brand By ID
 // @route  GET /api/v1/brands/:id

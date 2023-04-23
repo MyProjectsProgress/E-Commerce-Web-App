@@ -4,10 +4,10 @@ const mongoose = require('mongoose');
 const brandSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: [true, 'Brand is required'],
-        unique: [true, 'Brand must be unique'],
-        minlength: [3, 'Too short Brand name'],
-        maxlength: [32, 'Too long Brand name']
+        required: [true, 'Brand Is Required'],
+        unique: [true, 'Brand Must Be Unique'],
+        minlength: [3, 'Too Short Brand Name'],
+        maxlength: [32, 'Too Long Brand Name'],
     },
     // A and B => shopping.com/a-and-b
     slug: {

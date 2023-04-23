@@ -1,13 +1,13 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
-const mongoose = require('mongoose');
 
 dotenv.config({ path: 'config.env' });
-
 const ApiError = require('./utils/apiError');
 const globalError = require('./middlewares/errorMiddleware');
 const dbConncetion = require('./config/database');
+
+// ROUTES
 const categoryRoute = require('./routes/categoryRoute');
 const subCategoryRoute = require('./routes/subCategoryRoute');
 const brandRoute = require('./routes/brandRoute');
@@ -20,7 +20,7 @@ dbConncetion();
 /**
  * Everything inside express is a middleware.
  * example: logging then user auth then json parsing then static files and app routing 
- * the cycel is called request respond cycle
+ * the cycle is called request respond cycle
  * validation layer is a middleware 
  * we move through keyword called next()
  */

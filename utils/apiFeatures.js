@@ -12,17 +12,16 @@ class ApiFeatures {
 
         // FILTERATION USING [gt, gte, lt, lte]
         let queryStr = JSON.stringify(queryStringObj); //convert the query object to json string to apply replace function on it
-        queryStr = queryStr.replace(/(gte|gt|lte|lt)\b/g, match => `$${match}`); // applying the most strange function in coding history
-        queryStr = JSON.parse(queryStr);
+        queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`); // applying the most strange function in coding history
 
-        this.mongooseQuery = this.mongooseQuery.find(queryStr);
+        this.mongooseQuery = this.mongooseQuery.find(JSON.parse(queryStr));
         return this;
     }
 
     sort() {
         if (this.queryString.sort) {
             // price, -sold => [price, -sold] => price -sold
-            const sortBy = this.queryString.sort.split(',').join(' ');
+            const sortBy = this.queryString.sort.toString().split(',').join(' ');
             this.mongooseQuery = this.mongooseQuery.sort(sortBy);
         } else {
             this.mongooseQuery = this.mongooseQuery.select('-cteateAt');
@@ -32,7 +31,7 @@ class ApiFeatures {
 
     limitFileds() {
         if (this.queryString.fields) {
-            const fields = this.queryString.sort.split(',').join(' ');
+            const fields = this.queryString.sort.toString().split(',').join(' ');
             this.mongooseQuery = this.mongooseQuery.select(fields);
         } else {
             this.mongooseQuery = this.mongooseQuery.select('-__v');
@@ -43,7 +42,7 @@ class ApiFeatures {
     search(modelName) {
         if (this.queryString.keyword) {
             let query = {};
-            if (modelName == 'Products') {
+            if (modelName === 'Products') {
                 query.$or = [
                     { title: { $regex: this.queryString.keyword, $options: 'i' } },
                     { description: { $regex: this.queryString.keyword, $options: 'i' } },

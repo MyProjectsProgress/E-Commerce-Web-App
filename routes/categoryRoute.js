@@ -2,9 +2,9 @@ const express = require('express');
 
 const {
     getCategoryValidator,
-    deleteCategoryValidator,
+    createCategoryValidator,
     updateCategoryValidator,
-    createCategoryValidator
+    deleteCategoryValidator,
 } = require('../utils/validators/categoryValidator');
 
 const {
@@ -12,7 +12,7 @@ const {
     getCategory,
     createCategory,
     updateCategory,
-    deleteCategory
+    deleteCategory,
 } = require('../controllers/categoryContorller');
 
 const subCategoriesRoute = require('./subCategoryRoute');

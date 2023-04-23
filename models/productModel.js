@@ -4,10 +4,10 @@ const productSchema = new mongoose.Schema(
     {
         title: {
             type: String,
-            required: true,
+            required: [true, 'Product Must Have Title'],
             trim: true,
-            minlength: [3, "Too Short Product Title"],
-            maxlength: [100, "Too Long Product Title"],
+            minlength: [3, 'Too Short Product Title'],
+            maxlength: [100, 'Too Long Product Title'],
         },
         slug: {
             type: String,
@@ -16,12 +16,12 @@ const productSchema = new mongoose.Schema(
         },
         description: {
             type: String,
-            required: true,
-            minlength: [20, "Too Short Product Description"],
+            required: [true, 'Product Description Is Required'],
+            minlength: [20, 'Too Short Product Description'],
         },
         quantity: {
             type: Number,
-            required: true,
+            required: [true, 'Product Quantity Is Required'],
         },
         sold: {
             type: Number,
@@ -29,21 +29,21 @@ const productSchema = new mongoose.Schema(
         },
         price: {
             type: Number,
-            required: true,
+            required: [true, 'Product Price Is Required'],
             // trim: true,
-            max: [10000000, "Too Long Product Price"],
+            max: [10000000, 'Too Long Product Price'],
         },
         priceAfterDiscount: {
             type: Number,
             trim: true,
-            max: [10000000, "Too Long Product Price"],
+            max: [10000000, 'Too Long Product Price'],
         },
 
         colors: [String],
 
         imageCover: {
             type: String,
-            required: [true, "Product Image Cover Is Required"],
+            required: [true, 'Product Image Cover Is Required'],
         },
 
         images: [String],
@@ -51,7 +51,7 @@ const productSchema = new mongoose.Schema(
         category: {
             type: mongoose.Schema.ObjectId,
             ref: 'Category',
-            required: [true, 'Product must belong to category'],
+            required: [true, 'Product Must Belong to Category'],
         },
         subcategories: [{
             type: mongoose.Schema.ObjectId,
@@ -63,8 +63,8 @@ const productSchema = new mongoose.Schema(
         },
         ratingsAverage: {
             type: Number,
-            min: [1, "Rating Must be Between 1 and 5"],
-            max: [5, "Rating Must be Between 1 and 5"],
+            min: [1, 'Rating Must Be Between 1.0 and 5.0'],
+            max: [5, 'Rating Must Be Between 1.0 and 5.0'],
         },
         ratingsQuantity: {
             type: Number,
@@ -74,6 +74,15 @@ const productSchema = new mongoose.Schema(
     },
     { timestamps: true }
 );
+
+// Mongoose query middleware
+productSchema.pre(/^find/, function (next) {
+    this.populate({
+        path: 'category',
+        select: 'name -_id',
+    });
+    next();
+});
 
 const ProductModel = mongoose.model('Product', productSchema);
 

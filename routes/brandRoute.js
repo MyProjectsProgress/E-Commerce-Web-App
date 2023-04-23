@@ -2,9 +2,9 @@ const express = require('express');
 
 const {
     getBrandValidator,
-    deleteBrandValidator,
+    createBrandValidator,
     updateBrandValidator,
-    createBrandValidator
+    deleteBrandValidator,
 } = require('../utils/validators/brandValidator');
 
 const {
@@ -12,7 +12,7 @@ const {
     getBrand,
     createBrand,
     updateBrand,
-    deleteBrand
+    deleteBrand,
 } = require('../controllers/brandConrtroller');
 
 const router = express.Router();

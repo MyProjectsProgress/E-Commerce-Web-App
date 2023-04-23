@@ -5,23 +5,25 @@ const {
     createSubCategory,
     getSubCategories,
     getSubCategory,
-    deleteSubCategory,
     updateSubCategory,
+    deleteSubCategory,
     setCategoryIdToBody,
-    createFilterObj
+    createFilterObj,
 } = require('../controllers/subCategoryController');
 
 const {
     createSubCategoryValidator,
     getSubCategoryValidator,
+    updateSubCategoryValidator,
     deleteSubCategoryValidator,
-    updateSubCategoryValidator
 } = require('../utils/validators/subCategoryValidator');
 
 
 // mergeParams : allows us to access parameteers on other routers
 // ex: we need to access category id from category router
 const router = express.Router({ mergeParams: true });
+
+// Remember the validation layer is before business logic which is in the controller
 
 // ROUTE
 router.route('/')
@@ -33,6 +35,3 @@ router.route('/:id')
     .delete(deleteSubCategoryValidator, deleteSubCategory);
 
 module.exports = router;
-
-
-// Remember the validation layer is before business logic which is in the controller

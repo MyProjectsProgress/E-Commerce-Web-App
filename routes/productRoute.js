@@ -2,9 +2,9 @@ const express = require('express');
 
 const {
     getProductValidator,
-    deleteProductValidator,
+    createProductValidator,
     updateProductValidator,
-    createProductValidator
+    deleteProductValidator,
 } = require('../utils/validators/productValidator');
 
 const {
@@ -12,14 +12,10 @@ const {
     getProduct,
     createProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
 } = require('../controllers/productController');
 
-// const subProductsRoute = require('./subProductRoute');
-
 const router = express.Router();
-
-// router.use('/:productId/subcategories', subProductsRoute);
 
 router.route('/')
     .get(getProducts)
