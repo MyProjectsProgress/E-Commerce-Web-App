@@ -76,6 +76,8 @@ const productSchema = new mongoose.Schema(
 );
 
 // Mongoose query middleware
+// if the query is find use this function
+// populate takes the path and the name 
 productSchema.pre(/^find/, function (next) {
     this.populate({
         path: 'category',

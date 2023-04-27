@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const dbConncetion = () => {
     mongoose.connect(process.env.DB_URI)
         .then((conn) => {
-            console.log(`Database connected: ${conn.connection.host}`);
+            console.log(`Database Connected: ${conn.connection.host}`);
         })
     // .catch((err) => {
     //     console.error(`Database Error: ${err}`);

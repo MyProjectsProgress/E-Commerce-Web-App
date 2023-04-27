@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+mongoose.set('strictQuery', true);
 
 // 1- CREATE SCHEMA
 const brandSchema = new mongoose.Schema({

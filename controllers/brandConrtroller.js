@@ -1,5 +1,34 @@
-const Brand = require('../models/brandModel');
+const { v4: uuidv4 } = require('uuid');
+const sharp = require('sharp');
+const asyncHandler = require('express-async-handler');
+
 const factory = require('./zHandlersFactory');
+const { uploadSingleImage } = require('../middlewares/uploadImageMiddleware');
+const Brand = require('../models/brandModel');
+
+// multer middleware that uploads single file
+exports.uploadBrandImage = uploadSingleImage('image');
+
+// this part is not refactorered as a lot of arguments would be added
+exports.imageProcessing = asyncHandler(async (req, res, next) => {
+
+    const randomID = uuidv4();
+    const filename = `brand-${randomID}-${Date.now()}.jpeg`;
+
+    // sharp is node.js library for image processing 
+    // withMetadata: to solve the problem of rotation of image after resizing to retain the exif data that includes the correct orientation of the image
+    await sharp(req.file.buffer)
+        .resize(600, 600)
+        .withMetadata()
+        .toFormat('jpeg')
+        .jpeg({ quality: 90 })
+        .toFile(`uploads/brands/${filename}`);
+
+    //save image into DB
+    req.body.image = filename;
+
+    next();
+});
 
 // @desc   Get list of Brands
 // @route  GET /api/v1/brands

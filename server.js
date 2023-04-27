@@ -1,7 +1,12 @@
+//core modules
+const path = require('path'); // core module that exists in node.js itself
+
+// third party modules
 const express = require('express');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 
+// project files
 dotenv.config({ path: 'config.env' });
 const ApiError = require('./utils/apiError');
 const globalError = require('./middlewares/errorMiddleware');
@@ -27,7 +32,8 @@ dbConncetion();
 const app = express();
 
 // MIDDLEWARES
-app.use(express.json()); // to parse the posting request from string to json object.
+app.use(express.json()); // to parse the posting request from string to json object
+app.use(express.static(path.join(__dirname, 'uploads'))); // to serve static files
 
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));

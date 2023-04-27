@@ -34,6 +34,7 @@ exports.updateOne = (Model) => asyncHandler(async (req, res, next) => {
 // @route  POST /api/v1/model
 // @access Private
 exports.createOne = (Model) => asyncHandler(async (req, res) => {
+    // Remmeber, we don't need next as we use res.send() embedded in res.status.json({})
     const document = await Model.create(req.body);
     res.status(201).json({ data: document });
 });
