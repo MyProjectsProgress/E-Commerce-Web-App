@@ -6,7 +6,6 @@ const factory = require('./zHandlersFactory');
 const { uploadSingleImage } = require('../middlewares/uploadImageMiddleware');
 const Category = require('../models/categoryModel');
 
-
 // multer middleware that uploads single file
 exports.uploadCategoryImage = uploadSingleImage('image');
 
@@ -22,7 +21,7 @@ exports.imageProcessing = asyncHandler(async (req, res, next) => {
         .resize(600, 600)
         .withMetadata()
         .toFormat('jpeg')
-        .jpeg({ quality: 90 })
+        .jpeg({ quality: 95 })
         .toFile(`uploads/categories/${filename}`);
 
     //save image into DB

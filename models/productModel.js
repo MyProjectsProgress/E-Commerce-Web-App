@@ -86,6 +86,33 @@ productSchema.pre(/^find/, function (next) {
     next();
 });
 
+const setImageURL = (doc) => {
+    // return image base url + image name
+    if (doc.imageCover) {
+        const imageURL = `${process.env.BASE_URL}/products/${doc.imageCover}`;
+        doc.imageCover = imageURL;
+    }
+    if (doc.images) {
+        const imagesList = [];
+        doc.images.forEach((image) => {
+            const imageURL = `${process.env.BASE_URL}/products/${image}`;
+            imagesList.push(imageURL);
+        });
+        doc.images = imagesList;
+    }
+};
+
+// middleware that is excuted with all apis except create
+productSchema.post('init', function (doc) {
+    setImageURL(doc);
+});
+
+// middleware that is excuted with create
+productSchema.post('save', function (doc) {
+    setImageURL(doc);
+});
+
+
 const ProductModel = mongoose.model('Product', productSchema);
 
 module.exports = ProductModel;

@@ -21,7 +21,7 @@ exports.imageProcessing = asyncHandler(async (req, res, next) => {
         .resize(600, 600)
         .withMetadata()
         .toFormat('jpeg')
-        .jpeg({ quality: 90 })
+        .jpeg({ quality: 95 })
         .toFile(`uploads/brands/${filename}`);
 
     //save image into DB
