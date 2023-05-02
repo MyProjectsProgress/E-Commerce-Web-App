@@ -15,7 +15,7 @@ const {
     deleteCategory,
     uploadCategoryImage,
     imageProcessing,
-} = require('../controllers/categoryContorller');
+} = require('../controllers/categoryController');
 
 
 
