@@ -17,7 +17,7 @@ const {
     imageProcessing,
 } = require('../controllers/categoryController');
 
-
+const authController = require('../controllers/authController');
 
 const subCategoriesRoute = require('./subCategoryRoute');
 
@@ -27,7 +27,7 @@ router.use('/:categoryId/subcategories', subCategoriesRoute);
 
 router.route('/')
     .get(getCategories)
-    .post(uploadCategoryImage, imageProcessing, createCategoryValidator, createCategory);
+    .post(authController.protect, uploadCategoryImage, imageProcessing, createCategoryValidator, createCategory);
 
 router.route('/:id')
     .get(getCategoryValidator, getCategory)

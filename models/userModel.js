@@ -28,6 +28,9 @@ const userSchema = new mongoose.Schema(
             required: [true, 'Password Is Required'],
             minlength: [6, 'Too Short Password'],
         },
+
+        passwordChangedAt: Date,
+
         role: {
             type: String,
             // don't accept any role but user or admin

@@ -1,21 +1,23 @@
 const express = require('express');
 
 const {
-    signupValidator
+    signupValidator,
+    loginValidator,
 } = require('../utils/validators/authValidator');
 
 const {
-    signup
+    signup,
+    login,
 } = require('../controllers/authController');
 
 const router = express.Router();
 
-// router
-//     .put('/changePassword/:id', changeUserPasswordValidator, changeUserPassword);
 
 router.route('/signup')
-    // .get(getUsers)
     .post(signupValidator, signup);
+
+router.route('/login')
+    .post(loginValidator, login);
 
 // router.route('/:id')
 //     .get(getUser)
