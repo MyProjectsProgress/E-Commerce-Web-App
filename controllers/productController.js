@@ -21,7 +21,6 @@ exports.productImageProcessing = asyncHandler(async (req, res, next) => {
 
     // image processing for imageCover
     if (req.files.imageCover) {
-        console.log(JSON.parse(JSON.stringify(req.body)))
 
         const randomID = uuidv4();
         const imageCoverFilename = `product-${randomID}-${Date.now()}-cover.jpeg`;
@@ -35,7 +34,7 @@ exports.productImageProcessing = asyncHandler(async (req, res, next) => {
             .jpeg({ quality: 95 })
             .toFile(`uploads/products/${imageCoverFilename}`);
 
-        //save image into DB
+        // save image into DB by creating new field called imageCover 
         req.body.imageCover = imageCoverFilename;
     }
 
@@ -44,8 +43,9 @@ exports.productImageProcessing = asyncHandler(async (req, res, next) => {
 
         req.body.images = [];
         // why promise.all()? to wait untill map finishes then send the request
+        // wihtout it, middlewares wouldn't wait untill the map loop finishes
         await Promise.all(
-
+            // after so many trials, map works with async but ofreach doesn't because it creates an array so that it handles async
             req.files.images.map(async (image, index) => {
 
                 const randomID = uuidv4();
@@ -63,7 +63,6 @@ exports.productImageProcessing = asyncHandler(async (req, res, next) => {
                 //save image into DB
                 req.body.images.push(imageFilename);
             })
-
         );
     }
     next();

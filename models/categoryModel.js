@@ -1,20 +1,25 @@
 const mongoose = require('mongoose');
 
-// 1- CREATE SCHEMA
+// CREATE SCHEMA
 const categorySchema = new mongoose.Schema({
     name: {
         type: String,
-        required: [true, 'Category Is Required'],
-        unique: [true, 'Category Must Be Unique'],
-        minlength: [3, 'Too Short Category Name'],
-        maxlength: [32, 'Too Long Category Name'],
+        required: [true, 'Category is required'],
+        unique: [true, 'Category must be unique'],
+        minlength: [3, 'Too short category name'],
+        maxlength: [32, 'Too long category name'],
     },
+
     // A and B => shopping.com/a-and-b
     slug: {
         type: String,
         lowercase: true,
     },
-    image: String
+
+    image: {
+        type: String,
+        required: [true, 'Category must be uploaded'],
+    }
 },
     { timestamps: true } // time stamps will create two fields in database, "created at and updated at"
 );
@@ -28,6 +33,7 @@ const setImageURL = (doc) => {
 };
 
 // middleware that is excuted with all apis except create
+// init apply its call back function before returning the response
 categorySchema.post('init', function (doc) {
     setImageURL(doc);
 });
@@ -37,7 +43,7 @@ categorySchema.post('save', function (doc) {
     setImageURL(doc);
 });
 
-// 2- CREATE MODEL 
+// CREATE MODEL 
 const CategoryModel = mongoose.model('Category', categorySchema);
 
 module.exports = CategoryModel;

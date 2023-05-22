@@ -5,16 +5,18 @@ mongoose.set('strictQuery', true);
 const brandSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: [true, 'Brand Is Required'],
-        unique: [true, 'Brand Must Be Unique'],
-        minlength: [3, 'Too Short Brand Name'],
-        maxlength: [32, 'Too Long Brand Name'],
+        required: [true, 'Brand is required'],
+        unique: [true, 'Brand must be unique'],
+        minlength: [3, 'Too short brand name'],
+        maxlength: [32, 'Too long brand name'],
     },
+
     // A and B => shopping.com/a-and-b
     slug: {
         type: String,
         lowercase: true,
     },
+
     image: String
 },
     { timestamps: true } // time stamps will create two fields in database, "created at and updated at"

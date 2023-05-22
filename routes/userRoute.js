@@ -21,6 +21,7 @@ const {
 
 const router = express.Router();
 
+// special route for changing password
 router
     .put('/changePassword/:id', changeUserPasswordValidator, changeUserPassword);
 

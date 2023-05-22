@@ -19,8 +19,11 @@ const {
 } = require('../utils/validators/subCategoryValidator');
 
 
-// mergeParams : allows us to access parameteers on other routers
-// ex: we need to access category id from category router
+// mergeParams : allows us to access parameters on other routers
+// ex: we need to access category id from category router.
+// we access categoryId here: router.use('/:categoryId/subcategories', subCategoriesRoute);
+// simply it access categoryId that is passed.
+// this applies for '/' not '/:d'
 const router = express.Router({ mergeParams: true });
 
 // Remember the validation layer is before business logic which is in the controller

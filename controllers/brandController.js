@@ -24,7 +24,8 @@ exports.imageProcessing = asyncHandler(async (req, res, next) => {
         .jpeg({ quality: 95 })
         .toFile(`uploads/brands/${filename}`);
 
-    //save image into DB
+    // save image into DB
+    // to save image url: req.hostname + filename
     req.body.image = filename;
 
     next();

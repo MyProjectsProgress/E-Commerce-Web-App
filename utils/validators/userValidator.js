@@ -1,15 +1,16 @@
 const slugify = require('slugify');
 const { check, body } = require('express-validator');
+const bcrypt = require('bcryptjs');
+
 const validatorMiddleware = require('../../middlewares/validatorMiddleware');
 const User = require('../../models/userModel');
-const bcrypt = require('bcryptjs');
 
 exports.createUserValidator = [
     check('name')
         .notEmpty()
         .withMessage('User Required')
         .isLength({ min: 3 })
-        .withMessage('Too Short User Name')
+        .withMessage('Too short user name')
         .custom((val, { req }) => {
             req.body.slug = slugify(val);
             return true;
@@ -17,35 +18,39 @@ exports.createUserValidator = [
 
     check('email')
         .notEmpty()
-        .withMessage('Email Is Required')
+        .withMessage('Email is required')
         .isEmail()
-        .withMessage('Invalid Email Address')
+        .withMessage('Invalid email address')
         .custom((val) =>
+            // check if input email is in used before
             User.findOne({ email: val }).then((user) => {
                 if (user) {
-                    return Promise.reject(new Error('E-mail Is In Use'))
+                    return Promise.reject(new Error('E-mail is in use'))
                 }
             })
         ),
 
     check('password')
         .notEmpty()
-        .withMessage('Password Is Required')
+        .withMessage('Password is required')
         .isLength({ min: 6 })
-        .withMessage('Password Must Be Longer Tahn 6 Characters')
+        .withMessage('Password must be longer than 6 characters')
+        // check if password doesn't match the confirmation password
         .custom((password, { req }) => {
             if (password !== req.body.passwordConfirm) {
-                throw new Error('Password Confirmaiton Is Incorrect');
+                throw new Error('Password confirmaiton is incorrect');
             }
             return true;
         }),
 
+    // not existing in schema because we don't need to save it
     check('passwordConfirm')
         .notEmpty()
-        .withMessage('Password Confirm Is Required'),
+        .withMessage('Password confirm is required'),
 
     check('phone')
         .optional()
+        // check if input phone number is ehyptian or saudi arabian
         .isMobilePhone(['ar-EG', 'ar-SA'])
         .withMessage('Invalid Phone Number Only Accept EG and SA Phone Numbers'),
 
@@ -110,18 +115,22 @@ exports.changeUserPasswordValidator = [
         .notEmpty()
         .withMessage('You Must Enter The New Password')
         .custom(async (val, { req }) => {
-            // - Verify Current Password
+
+            // validate user is in database
             const user = await User.findById(req.params.id);
             if (!user) {
                 throw new Error('There Is No User for This ID');
             }
+
+            // - Verify Current Password is equal from the password existing in database
+            // compare takes the not hashed pass and the hashed one, if equal will return true
             const isCorrectPassword = await bcrypt.compare(req.body.currentPassword, user.password);
-            console.log()
 
             if (!isCorrectPassword) {
                 throw new Error('Incorrect Current Password');
             }
-            // - Verify Password Confirm
+
+            // - Verify Password Confirm is equal to the new password
             if (val !== req.body.passwordConfirm) {
                 throw new Error('Incorrect Confirmation Password');
             }

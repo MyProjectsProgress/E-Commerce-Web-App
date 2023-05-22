@@ -12,20 +12,23 @@ exports.uploadCategoryImage = uploadSingleImage('image');
 // this part is not refactorered as a lot of arguments would be added
 exports.imageProcessing = asyncHandler(async (req, res, next) => {
 
-    const randomID = uuidv4();
-    const filename = `category-${randomID}-${Date.now()}.jpeg`;
+    if (req.file) {
+        const randomID = uuidv4();
+        const filename = `category-${randomID}-${Date.now()}.jpeg`;
 
-    // sharp is node.js library for image processing 
-    // withMetadata: to solve the problem of rotation of image after resizing to retain the exif data that includes the correct orientation of the image
-    await sharp(req.file.buffer)
-        .resize(600, 600)
-        .withMetadata()
-        .toFormat('jpeg')
-        .jpeg({ quality: 95 })
-        .toFile(`uploads/categories/${filename}`);
+        // sharp is node.js library for image processing 
+        // withMetadata: to solve the problem of rotation of image after resizing to retain the exif data that includes the correct orientation of the image
 
-    //save image into DB
-    req.body.image = filename;
+        await sharp(req.file.buffer)
+            .resize(600, 600)
+            .withMetadata()
+            .toFormat('jpeg')
+            .jpeg({ quality: 95 })
+            .toFile(`uploads/categories/${filename}`);
+
+        //save image into DB
+        req.body.image = filename;
+    }
 
     next();
 });

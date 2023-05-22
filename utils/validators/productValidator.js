@@ -1,5 +1,6 @@
 const slugify = require('slugify');
 const { check, body } = require('express-validator');
+
 const validatorMiddleware = require('../../middlewares/validatorMiddleware');
 const Catgeroy = require('../../models/categoryModel');
 const SubCategory = require('../../models/subCategoryModel');
@@ -14,31 +15,36 @@ exports.createProductValidator = [
             req.body.slug = slugify(val);
             return true;
         }),
+
     check('description')
         .notEmpty()
         .withMessage('Product Description Is Required')
         .isLength({ max: 2000 })
         .withMessage('Too Long Description'),
+
     check('quantity')
         .notEmpty()
         .withMessage('Product Quantity Is Required')
         .isNumeric()
         .withMessage('Product Quantity Must Be a Number'),
+
     check('sold')
         .optional()
         .isNumeric()
         .withMessage('Product Quantity Must Be a Number'),
+
     check('price')
         .notEmpty()
         .withMessage('Product Price Is Required')
         .isNumeric()
         .withMessage('Product Price Must Be a Number')
         .isLength({ max: 32 }).withMessage('Digits Must Be Less Than 32'),
+
     check('priceAfterDiscount')
         .optional()
-        .toFloat()
         .isNumeric()
         .withMessage('Product Price After Discount Must Be a Number')
+        .toFloat()
         // Parameters: price after discount and req is destructing the request so we have the whole request paramters.
         // flashing error if the price after discount is bigger than the price before discount.
         .custom((priceAfterDiscountBody, { req }) => {
@@ -47,44 +53,60 @@ exports.createProductValidator = [
             }
             return true;
         }),
+
     check('colors')
         .optional()
         .isArray()
         .withMessage('Images Should Be Array of Strings'),
+
     check('category')
         .notEmpty()
         .withMessage('Invalid ID Format')
+        // checking if the category id that the product belong to exists in the database or not
         .custom((categoryId) => Catgeroy.findById(categoryId).then((category) => {
             if (!category) {
-                return Promise.reject(new Error(`No Category For This ID ${categoryId}`));
+                return Promise.reject(new Error(`No Category For This ID: ${categoryId}`));
             }
         })
         ),
+
     check('subcategories')
         .optional()
         .isMongoId()
         .withMessage('Invalid ID Format')
-        // Making sure that the retrived idscontains the subcategories id that comes from creation request.
+        // Making sure that subcategories ids exist in subcategories database.
+        // $exists operator: returns all subcategories tha have IDs "Which are all the subcategories".
+        // $in operator: returns the subcategories that contains ids matches with the product subcategory id.
+        // finally we check if the number of returned subcategories match with the number of given ids or not.
         .custom((subcategoriesIds) => SubCategory.find({ _id: { $exists: true, $in: subcategoriesIds } }).then((result) => {
             if (result.length < 1 || result.length !== subcategoriesIds.length) {
                 return Promise.reject(new Error(`Invalid Subcategories IDs`));
             }
         }))
+
         // Making sure that the added subcategories belong to the category given in the request.
-        .custom((BodySubCategoriesIDs, { req }) => SubCategory.find({ category: req.body.category }).then((subcategories => {
+        /**
+         *  SubCategory.find({ category: req.body.category }) => gets all the subcategories that refers to what the product refers to.
+         * .then((subcategories => ... ) => (1) & (2)
+         */
+        .custom((bodySubCategoriesIDs, { req }) => SubCategory.find({ category: req.body.category }).then((subcategories => {
             const subCategoriesIDinDB = [];
+            // (1) to get array of IDs of subcategories that refer to the same category that the product refer to 
             subcategories.forEach((subCategory) => {
                 subCategoriesIDinDB.push(subCategory._id.toString());
             });
-            const checker = (target, arr) => BodySubCategoriesIDs.every(ID => arr.includes(ID));
-            if (!checker(BodySubCategoriesIDs, subCategoriesIDinDB)) {
+            // (2) check for each ID retrieved from the body check if it exists in the IDs retrieved from database
+            const checker = (target, arr) => target.every(ID => arr.includes(ID));
+            if (!checker(bodySubCategoriesIDs, subCategoriesIDinDB)) {
                 return Promise.reject(new Error(`Subcategories IDs Doesn't Belong To The Category ID`));
             }
         }))),
+
     check('brand')
         .optional()
         .isMongoId()
         .withMessage('Invalid ID Format'),
+
     check('ratingsAverage')
         .optional()
         .isNumeric()
@@ -93,6 +115,7 @@ exports.createProductValidator = [
         .withMessage('Rating Must Be from 1 to 5')
         .isLength({ max: 5 })
         .withMessage('Rating Must Be from 1 to 5'),
+
     check('ratingsQuantity')
         .optional()
         .isNumeric()

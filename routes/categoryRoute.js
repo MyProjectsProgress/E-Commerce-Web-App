@@ -17,17 +17,26 @@ const {
     imageProcessing,
 } = require('../controllers/categoryController');
 
-const authController = require('../controllers/authController');
+const { authController, protect } = require('../controllers/authController');
 
 const subCategoriesRoute = require('./subCategoryRoute');
 
 const router = express.Router();
 
+// this route is accessed in the subcategory route using mergeparams: true
+// if this resource came to you , go ahead and use "subCategoriesRoute"
+/**
+ * AGAIN:
+ * 1- if the user wants to get all subcategories under a specific category it hits the route api/v1/categories/categoryId/subcategories
+ * 2- then we use this route and consume subCategoriesRoute
+ * 3- in subcategories route we create filter object and pass it to .find() method
+ * 4- if the id is passed, then filter object will be { category: req.params.categoryId } but if not the filter objcet will be {}
+ */
 router.use('/:categoryId/subcategories', subCategoriesRoute);
 
 router.route('/')
     .get(getCategories)
-    .post(authController.protect, uploadCategoryImage, imageProcessing, createCategoryValidator, createCategory);
+    .post(protect, uploadCategoryImage, imageProcessing, createCategoryValidator, createCategory);
 
 router.route('/:id')
     .get(getCategoryValidator, getCategory)

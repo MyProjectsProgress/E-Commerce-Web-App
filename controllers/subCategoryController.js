@@ -1,6 +1,13 @@
-const SubCategory = require('../models/subCategoryModel');
 const factory = require('./zHandlersFactory');
+const SubCategory = require('../models/subCategoryModel');
 
+
+/**
+ * this function is added before validation layer of create new subcategory, why?
+ * to set the 'category' parameter to the categoryId that is passed from the api/v1/categories/categoryId/subcategories
+ * so that we solve the problem that when we create a new sucategory using this route we have the 'category' field is set to a value
+ */
+// MIDDLEWARE
 exports.setCategoryIdToBody = (req, res, next) => {
     // NESTED ROUTE
     if (!req.params.category) req.body.category = req.params.categoryId; // TAKE CARE YOU SET HERE A VALUE OF THE BODY
@@ -10,6 +17,13 @@ exports.setCategoryIdToBody = (req, res, next) => {
 // NESTED ROUTE
 // GET /api/v1/categories/:categoryID/subcategories
 // GET /api/v1/categories/:productID/reviews => ana hena ba2olo ana 3ayez kol el reviews elli 3al product dh
+/**
+ * this function is added before validation layer of get all subcategories, why?
+ * to set the 'category' parameter to the categoryId that is passed from the api/v1/categories/categoryId/subcategories
+ * so that we solve the problem that when we get  sucategories using this route we have the 'filterObj' field is set to a value
+ * and finally we use Model.find(req.params.filterObj)
+ */
+// MIDDLEWARE
 exports.createFilterObj = (req, res, next) => {
     let filterObject = {};
     if (req.params.categoryId) filterObject = { category: req.params.categoryId }; // get data based on this specific category id

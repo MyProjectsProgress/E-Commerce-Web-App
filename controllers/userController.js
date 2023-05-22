@@ -54,6 +54,7 @@ exports.createUser = factory.createOne(User);
 // @access Private
 exports.updateUser = asyncHandler(async (req, res, next) => {
 
+    // updating all fields but password
     const document = await User.findByIdAndUpdate(req.params.id,
         {
             name: req.body.name,
@@ -72,6 +73,9 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
     res.status(200).json({ data: document });
 });
 
+// @desc   Update User Password
+// @route  PUT /api/v1/users/:id
+// @access Private
 exports.changeUserPassword = asyncHandler(async (req, res, next) => {
 
     const document = await User.findByIdAndUpdate(req.params.id,

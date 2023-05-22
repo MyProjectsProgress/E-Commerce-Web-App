@@ -1,4 +1,5 @@
 const asyncHandler = require('express-async-handler');
+
 const ApiError = require('../utils/apiError');
 const ApiFeatures = require('../utils/apiFeatures');
 
@@ -6,13 +7,12 @@ const ApiFeatures = require('../utils/apiFeatures');
 // @route  PUT /api/v1/model/:id
 // @access Private
 exports.deleteOne = (Model) => asyncHandler(async (req, res, next) => {
-    const { id } = req.params;
-    const document = await Model.findByIdAndDelete(id);
+
+    const document = await Model.findByIdAndDelete(req.params.id);
 
     if (!document) {
-        return next(new ApiError(`No Document for This ID: ${id}`, 404));
+        return next(new ApiError(`No document for this ID: ${req.params.id}`, 404));
     }
-
     res.status(204).send();
 });
 
@@ -21,12 +21,12 @@ exports.deleteOne = (Model) => asyncHandler(async (req, res, next) => {
 // @access Private
 exports.updateOne = (Model) => asyncHandler(async (req, res, next) => {
 
+    // new is true to send the updated data in the response no the old data
     const document = await Model.findByIdAndUpdate(req.params.id, req.body, { new: true });
 
     if (!document) {
-        return next(new ApiError(`No Document for This ID: ${id}`, 404));
+        return next(new ApiError(`No document for this ID: ${req.params.id}`, 404));
     }
-
     res.status(200).json({ data: document });
 });
 
@@ -43,10 +43,11 @@ exports.createOne = (Model) => asyncHandler(async (req, res) => {
 // @route  GET /api/v1/models/:id
 // @access Public
 exports.getOne = (Model) => asyncHandler(async (req, res, next) => {
-    const { id } = req.params;
-    const document = await Model.findById(id);
+
+    const document = await Model.findById(req.params.id);
+
     if (!document) {
-        return next(new ApiError(`No Document for This ID: ${id}`, 404));
+        return next(new ApiError(`No document for this ID: ${req.params.id}`, 404));
     }
     res.status(200).json({ data: document });
 });
@@ -55,17 +56,21 @@ exports.getOne = (Model) => asyncHandler(async (req, res, next) => {
 // @route  GET /api/v1/models
 // @access Public
 exports.getAll = (Model, modelName = '') => asyncHandler(async (req, res) => {
+
     let filter = {};
     if (req.filterObj) {
         filter = req.filterObj;
     }
     // Build Query
+    // countDocuments() is a built in function that counts model docs
     const documentCounts = await Model.countDocuments();
+
+    // we create object then apply the chained features on it.
     const apiFeatures = new ApiFeatures(Model.find(filter), req.query)
         .paginate(documentCounts)
         .filter()
         .search(modelName)
-        .limitFileds()
+        .limitFields()
         .sort();
 
     // Excute Query
