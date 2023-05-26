@@ -16,10 +16,8 @@ const categorySchema = new mongoose.Schema({
         lowercase: true,
     },
 
-    image: {
-        type: String,
-        required: [true, 'Category must be uploaded'],
-    }
+    image: String,
+
 },
     { timestamps: true } // time stamps will create two fields in database, "created at and updated at"
 );

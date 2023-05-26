@@ -19,13 +19,15 @@ const {
 
 const router = express.Router();
 
+const { protect, allowedTo } = require('../controllers/authController');
+
 router.route('/')
     .get(getBrands)
-    .post(uploadBrandImage, imageProcessing, createBrandValidator, createBrand);
+    .post(protect, allowedTo('admin', 'manager'), uploadBrandImage, imageProcessing, createBrandValidator, createBrand);
 
 router.route('/:id')
     .get(getBrandValidator, getBrand)
-    .put(uploadBrandImage, imageProcessing, updateBrandValidator, updateBrand)
-    .delete(deleteBrandValidator, deleteBrand);
+    .put(protect, allowedTo('admin', 'manager'), uploadBrandImage, imageProcessing, updateBrandValidator, updateBrand)
+    .delete(protect, allowedTo('admin'), deleteBrandValidator, deleteBrand);
 
 module.exports = router;

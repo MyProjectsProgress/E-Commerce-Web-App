@@ -22,9 +22,9 @@ exports.createCategoryValidator = [
             return true;
         }),
 
-    check('image')
-        .notEmpty()
-        .withMessage('Image Is Required'),
+    // check('image')
+    //     .notEmpty()
+    //     .withMessage('Image Is Required'),
     validatorMiddleware,
 ];
 

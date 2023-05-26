@@ -17,15 +17,17 @@ const {
     productImageProcessing,
 } = require('../controllers/productController');
 
+const { protect, allowedTo } = require('../controllers/authController');
+
 const router = express.Router();
 
 router.route('/')
     .get(getProducts)
-    .post(uploadProductImages, productImageProcessing, createProductValidator, createProduct);
+    .post(protect, allowedTo('admin', 'manager'), uploadProductImages, productImageProcessing, createProductValidator, createProduct);
 
 router.route('/:id')
     .get(getProductValidator, getProduct)
-    .put(uploadProductImages, productImageProcessing, updateProductValidator, updateProduct)
-    .delete(deleteProductValidator, deleteProduct);
+    .put(protect, allowedTo('admin', 'manager'), uploadProductImages, productImageProcessing, updateProductValidator, updateProduct)
+    .delete(protect, allowedTo('admin'), deleteProductValidator, deleteProduct);
 
 module.exports = router;

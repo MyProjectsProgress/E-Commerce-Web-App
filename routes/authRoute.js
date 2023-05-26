@@ -8,20 +8,17 @@ const {
 const {
     signup,
     login,
+    forgetPassword,
+    verifyPassResetCode,
+    resetPassword,
 } = require('../controllers/authController');
 
 const router = express.Router();
 
-
-router.route('/signup')
-    .post(signupValidator, signup);
-
-router.route('/login')
-    .post(loginValidator, login);
-
-// router.route('/:id')
-//     .get(getUser)
-//     .put(uploadUserImage, imageProcessing, updateUserValidator, updateUser)
-//     .delete(deleteUser);
+router.post('/signup', signupValidator, signup);
+router.post('/login', loginValidator, login);
+router.post('/forgetPassword', forgetPassword);
+router.post('/verifyResetCode', verifyPassResetCode);
+router.put('/resetPassword', resetPassword);
 
 module.exports = router;

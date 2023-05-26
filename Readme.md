@@ -43,11 +43,11 @@ During this section, we will start working on the product feature. We will see h
 
 In this section, we will learn how to upload one or more images and optimize the processes that will affect the image to improve performance. We will also handle errors that may occur when uploading files that are not images, and then we will start adding images to our product.
 
-### 10- Authentication And Authorization 🚧 Currently Working On It
+### 10- Authentication And Authorization ✅ Done 
 
 In this section, we will explain the authentication process in detail. We will see how to login, create an account, reset the password, and how tokens work. We will also work on user permissions, where we will have an admin, manager, and regular user, and each one will have different permissions. This section is very important, and you will benefit greatly from it.
 
-### 11- Reviews, Wishlist And User Addresses 🔄 Not Yet
+### 11- Reviews, Wishlist And User Addresses 🚧 Currently Working On It
 
 During this section, we will start working on the product ratings and reviews. We will learn how to enable users to add ratings and reviews for products, as well as calculate the average number of ratings for each product along with the total number of ratings. We will also explain how to allow users to add a product to their favorites list and delete it. Additionally, we will enable users to add an address to their address book, which they can use when placing an order.
 
