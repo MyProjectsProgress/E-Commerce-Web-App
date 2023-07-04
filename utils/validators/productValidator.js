@@ -141,6 +141,6 @@ exports.deleteProductValidator = [
 ];
 
 exports.getProductValidator = [
-    check('id').isMongoId().withMessage("Invalid Category ID Format"),
+    check('id').isMongoId().withMessage("Invalid Product ID Format"),
     validatorMiddleware,
 ];

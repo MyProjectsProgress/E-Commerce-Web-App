@@ -130,6 +130,13 @@ exports.changeUserPasswordValidator = [
                 throw new Error('Incorrect Current Password');
             }
 
+            // - Verify the new password doesn't equal the old one
+            const equalOldPassword = await bcrypt.compare(val, admin.password);
+
+            if (equalOldPassword) {
+                throw new Error('Please, enter a new password');
+            }
+
             // - Verify Password Confirm is equal to the new password
             if (val !== req.body.passwordConfirm) {
                 throw new Error('Incorrect Confirmation Password');

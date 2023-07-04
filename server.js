@@ -17,8 +17,11 @@ const categoryRoute = require('./routes/categoryRoute');
 const subCategoryRoute = require('./routes/subCategoryRoute');
 const brandRoute = require('./routes/brandRoute');
 const productRoute = require('./routes/productRoute');
+const reviewRoute = require('./routes/reviewRoute');
 const userRoute = require('./routes/userRoute');
-const authRoute = require('./routes/authRoute.js');
+const authRoute = require('./routes/authRoute');
+const wishlistRoute = require('./routes/wishlistRoute');
+const addressRoute = require('./routes/addressRoute');
 
 // CONNECT WITH DATABASE
 dbConncetion();
@@ -32,7 +35,7 @@ app.use(express.static(path.join(__dirname, 'uploads'))); // to serve static fil
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
     console.log(`${process.env.NODE_ENV}`);
-}
+};
 
 // MOUNT ROUTES
 app.use('/api/v1/categories', categoryRoute);
@@ -40,7 +43,10 @@ app.use('/api/v1/subcategories', subCategoryRoute);
 app.use('/api/v1/brands', brandRoute);
 app.use('/api/v1/products', productRoute);
 app.use('/api/v1/users', userRoute);
+app.use('/api/v1/reviews', reviewRoute);
 app.use('/api/v1/auth', authRoute);
+app.use('/api/v1/wishlist', wishlistRoute);
+app.use('/api/v1/address', addressRoute);
 
 // WORKS WHEN THE URL IS NOT IN THE PREDEFINED URIS
 app.all("*", (req, res, next) => {
@@ -75,9 +81,9 @@ process.on("unhandledRejection", (err) => {
 /**
  * Everything inside express is a middleware.
  * example: logging then user auth then json parsing then static files and app routing
- * the cycle is called request respond cycle
+ * the cycle is called request respond cycle also known as three tier cycle => client server database
  * validation layer is a middleware
- * we move through keyword called next()
+ * we move through a middleware and not stuck in it we use a keyword called next(), res.send() finishes the middleware as well
  */
 
 // ERROR HANDLING
@@ -101,14 +107,25 @@ you can customize the error in this function
 
 // POPULATE('category')
 /**
- * It is a function that returns the contents of the coressponding id in the category table
+ * It is a function that returns the contents of the corresponding id in the category table
  * hence category table could be any other table
  * Take care: it os a query that costs time in req-res process so it must be done for a purpose
  */
 
 // REQUEST QUERY DESTRUCTION
 /**
- * Take care: 
+ * Take care:
  * 1- const queryStringObj = req.query --> pass by refrerence
  * 2- const queryStringObj = { ... req.query } this destruction means pass by value
+ * used when we don't want to change the whole response
  */
+
+// Embedding documents in mongoDB database:
+/**
+ * if there are lots of documents "like comments on a post" so it is better to separate
+ * the disadvantages of separation is that you have to excute two queries to populate certain comments
+ * if you embedded document in a model then you will have faster access to it by one query
+ */
+
+// Given a document, `populate()` lets you pull in referenced docs
+

@@ -39,7 +39,6 @@ const globalError = (err, req, res, next) => {
     // Development mode
     if (process.env.NODE_ENV === 'development') {
         sendErrorForDev(err, res);
-
     }
     // Production Mode
     else {

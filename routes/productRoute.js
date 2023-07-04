@@ -19,7 +19,11 @@ const {
 
 const { protect, allowedTo } = require('../controllers/authController');
 
+const reviewsRoute = require('../routes/reviewRoute');
+
 const router = express.Router();
+
+router.use('/:productId/reviews', reviewsRoute);
 
 router.route('/')
     .get(getProducts)

@@ -13,6 +13,8 @@ exports.deleteOne = (Model) => asyncHandler(async (req, res, next) => {
     if (!document) {
         return next(new ApiError(`No document for this ID: ${req.params.id}`, 404));
     }
+    // triger remove event when delete document 
+    document.remove();
     res.status(204).send();
 });
 
@@ -27,6 +29,8 @@ exports.updateOne = (Model) => asyncHandler(async (req, res, next) => {
     if (!document) {
         return next(new ApiError(`No document for this ID: ${req.params.id}`, 404));
     }
+    // triger save event when update document 
+    document.save();
     res.status(200).json({ data: document });
 });
 
@@ -42,9 +46,18 @@ exports.createOne = (Model) => asyncHandler(async (req, res) => {
 // @desc   Get Model By ID
 // @route  GET /api/v1/models/:id
 // @access Public
-exports.getOne = (Model) => asyncHandler(async (req, res, next) => {
+exports.getOne = (Model, populationOption) => asyncHandler(async (req, res, next) => {
 
-    const document = await Model.findById(req.params.id);
+    // build query 
+    let query = Model.findById(req.params.id);
+
+    if (populationOption) {
+        // adding another query 
+        query.populate(populationOption);
+    }
+
+    // excute query
+    const document = await query;
 
     if (!document) {
         return next(new ApiError(`No document for this ID: ${req.params.id}`, 404));

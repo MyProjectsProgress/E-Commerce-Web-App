@@ -78,8 +78,20 @@ const productSchema = new mongoose.Schema(
         }
 
     },
-    { timestamps: true }
+    {
+        timestamps: true,
+        // to enable virtual populate
+        toJSON: { virtuals: true },
+        toObject: { virtuals: true },
+    }
 );
+
+// translation line by line: create in product model field called reviews extracted from Review model based on product field = product _id
+productSchema.virtual('reviews', {
+    ref: 'Review',
+    foreignField: 'product',
+    localField: '_id'
+});
 
 // Mongoose query middleware
 // if the query is "find" use this function
