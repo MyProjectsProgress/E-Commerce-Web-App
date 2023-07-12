@@ -13,15 +13,7 @@ const globalError = require('./middlewares/errorMiddleware');
 const dbConncetion = require('./config/database'); // requiring yhe database connection file to connect database with the server
 
 // REQUIRING ROUTES
-const categoryRoute = require('./routes/categoryRoute');
-const subCategoryRoute = require('./routes/subCategoryRoute');
-const brandRoute = require('./routes/brandRoute');
-const productRoute = require('./routes/productRoute');
-const reviewRoute = require('./routes/reviewRoute');
-const userRoute = require('./routes/userRoute');
-const authRoute = require('./routes/authRoute');
-const wishlistRoute = require('./routes/wishlistRoute');
-const addressRoute = require('./routes/addressRoute');
+const mountRoutes = require('./routes');
 
 // CONNECT WITH DATABASE
 dbConncetion();
@@ -38,15 +30,7 @@ if (process.env.NODE_ENV === 'development') {
 };
 
 // MOUNT ROUTES
-app.use('/api/v1/categories', categoryRoute);
-app.use('/api/v1/subcategories', subCategoryRoute);
-app.use('/api/v1/brands', brandRoute);
-app.use('/api/v1/products', productRoute);
-app.use('/api/v1/users', userRoute);
-app.use('/api/v1/reviews', reviewRoute);
-app.use('/api/v1/auth', authRoute);
-app.use('/api/v1/wishlist', wishlistRoute);
-app.use('/api/v1/address', addressRoute);
+mountRoutes(app);
 
 // WORKS WHEN THE URL IS NOT IN THE PREDEFINED URIS
 app.all("*", (req, res, next) => {

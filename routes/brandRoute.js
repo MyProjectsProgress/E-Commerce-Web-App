@@ -17,9 +17,9 @@ const {
     uploadBrandImage,
 } = require('../controllers/brandController');
 
-const router = express.Router();
-
 const { protect, allowedTo } = require('../controllers/authController');
+
+const router = express.Router();
 
 router.route('/')
     .get(getBrands)
