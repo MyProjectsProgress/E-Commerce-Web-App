@@ -47,15 +47,15 @@ In this section, we will learn how to upload one or more images and optimize the
 
 In this section, we will explain the authentication process in detail. We will see how to login, create an account, reset the password, and how tokens work. We will also work on user permissions, where we will have an admin, manager, and regular user, and each one will have different permissions. This section is very important, and you will benefit greatly from it.
 
-### 11- Reviews, Wishlist And User Addresses 🚧 Currently Working On It
+### 11- Reviews, Wishlist And User Addresses ✅ Done 
 
 During this section, we will start working on the product ratings and reviews. We will learn how to enable users to add ratings and reviews for products, as well as calculate the average number of ratings for each product along with the total number of ratings. We will also explain how to allow users to add a product to their favorites list and delete it. Additionally, we will enable users to add an address to their address book, which they can use when placing an order.
 
-### 12- Coupons And Shopping Cart 🔄 Not Yet
+### 12- Coupons And Shopping Cart ✅ Done 
 
 In this section, we will start working on enabling the admin to create coupons, each coupon will have a specific expiration date and a certain discount percentage that the admin sets. The user will be able to use this coupon to get the discount. Additionally, we will enable the user to create a shopping cart where they can add the products they want to buy and adjust the quantity if available in the inventory. The user can also add a discount coupon to the cart.
 
-### 13- Cash And Online Orders, Online Payments And Deployments 🔄 Not Yet
+### 13- Cash And Online Orders, Online Payments And Deployments 🚧 Currently Working On It
 
 In this section, we will work on the order and payment process, whether the order will be paid in cash or upon delivery, or whether it will be paid through a payment card or an electronic wallet like Apple Pay or others. We will link it with the payment gateway and see what payment methods it provides, and we will make the payment process through it. We will also see how to check if the payment process was successful or not, and how to make an order in case the payment process was successful. We will talk in detail about cash payment and electronic payment. In the end, we will deploy the application on Heroku so that you can share it with the frontend or put the link in your portfolio.
 
@@ -63,13 +63,12 @@ In this section, we will work on the order and payment process, whether the orde
 
 In this section, we will talk a bit about the security measures that you can use to secure your application.
 
-### 15- Enhancements 🔄 Not Yet
-
-In this section, we will add the enhancements that will be added to the course, in addition to recording any problems that arise and adding them to this section.
-
-### 16- Appendix ✅ Done
+### 15- Appendix ✅ Done
 
 In this section, I will add some lessons about JavaScript that you can refer back to if you want to brush up on them to help you while you're working on the course.
+### 16- Nest.JS 🔄 Not Yet
+
+In this section, we will add the enhancements that will be added to the course, in addition to recording any problems that arise and adding them to this section.
 
 Contribution
 Contributions are welcome! If you find a bug or want to add a feature, please submit a pull request.
