@@ -55,11 +55,11 @@ During this section, we will start working on the product ratings and reviews. W
 
 In this section, we will start working on enabling the admin to create coupons, each coupon will have a specific expiration date and a certain discount percentage that the admin sets. The user will be able to use this coupon to get the discount. Additionally, we will enable the user to create a shopping cart where they can add the products they want to buy and adjust the quantity if available in the inventory. The user can also add a discount coupon to the cart.
 
-### 13- Cash And Online Orders, Online Payments And Deployments 🚧 Currently Working On It
+### 13- Cash And Online Orders, Online Payments And Deployments ✅ Done 
 
 In this section, we will work on the order and payment process, whether the order will be paid in cash or upon delivery, or whether it will be paid through a payment card or an electronic wallet like Apple Pay or others. We will link it with the payment gateway and see what payment methods it provides, and we will make the payment process through it. We will also see how to check if the payment process was successful or not, and how to make an order in case the payment process was successful. We will talk in detail about cash payment and electronic payment. In the end, we will deploy the application on Heroku so that you can share it with the frontend or put the link in your portfolio.
 
-### 14- Security 🔄 Not Yet
+### 14- Security 🚧 Currently Working On It
 
 In this section, we will talk a bit about the security measures that you can use to secure your application.
 
