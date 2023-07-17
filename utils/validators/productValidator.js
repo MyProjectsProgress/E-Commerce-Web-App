@@ -125,7 +125,11 @@ exports.createProductValidator = [
 ];
 
 exports.updateProductValidator = [
-    check('id').isMongoId().withMessage('Invalid ID Format'),
+
+    check('id')
+        .isMongoId()
+        .withMessage('Invalid ID Format'),
+
     body('name')
         .optional()
         .custom((val, { req }) => {

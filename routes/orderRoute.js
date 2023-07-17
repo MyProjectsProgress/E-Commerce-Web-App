@@ -1,11 +1,9 @@
 const express = require('express');
 
-// const {
-//     getBrandValidator,
-//     createBrandValidator,
-//     updateBrandValidator,
-//     deleteBrandValidator,
-// } = require('../utils/validators/brandValidator');
+const {
+    validateOrderId,
+    createCashOrderValidator,
+} = require('../utils/validators/orderValidator');
 
 const {
     createCashOrder,
@@ -25,16 +23,16 @@ router.route('/')
     .get(protect, allowedTo('user', 'admin', 'manager'), filterObjectForLoggedUser, findAllOrders);
 
 router.route('/:id')
-    .get(findSpecificOrder);
+    .get(validateOrderId, findSpecificOrder);
 
 router.route('/:id/pay')
-    .put(protect, allowedTo('admin', 'manager'), updateOrderPaymentStatus);
+    .put(protect, allowedTo('admin', 'manager'), validateOrderId, updateOrderPaymentStatus);
 
 router.route('/:id/deliver')
-    .put(protect, allowedTo('admin', 'manager'), updateOrderDeliverStatus);
+    .put(protect, allowedTo('admin', 'manager'), validateOrderId, updateOrderDeliverStatus);
 
 router.route('/:cartId')
-    .post(protect, allowedTo('user'), createCashOrder);
+    .post(protect, allowedTo('user'), createCashOrderValidator, createCashOrder);
 
 router.route('/checkout-session/:cartId')
     .get(protect, allowedTo('user'), checkoutSession);

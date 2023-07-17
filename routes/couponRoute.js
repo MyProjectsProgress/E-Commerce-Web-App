@@ -1,11 +1,11 @@
 const express = require('express');
 
-// const {
-//     getCouponValidator,
-//     createCouponValidator,
-//     updateCouponValidator,
-//     deleteCouponValidator,
-// } = require('../utils/validators/couponValidator');
+const {
+    getCouponValidator,
+    createCouponValidator,
+    updateCouponValidator,
+    deleteCouponValidator,
+} = require('../utils/validators/couponValidator');
 
 const {
     getCoupons,
@@ -23,11 +23,11 @@ router.use(protect, allowedTo('admin', 'manager'))
 
 router.route('/')
     .get(getCoupons)
-    .post(createCoupon);
+    .post(createCouponValidator, createCoupon);
 
 router.route('/:id')
-    .get(getCoupon)
-    .put(updateCoupon)
-    .delete(deleteCoupon);
+    .get(getCouponValidator, getCoupon)
+    .put(updateCouponValidator, updateCoupon)
+    .delete(deleteCouponValidator, deleteCoupon);
 
 module.exports = router;

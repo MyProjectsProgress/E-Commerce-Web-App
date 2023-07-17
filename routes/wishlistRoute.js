@@ -1,8 +1,8 @@
 const express = require('express');
 
-// const {
-
-// } = require('../utils/validators/wishlistValidator');
+const {
+    deleteWishlistProductValidator
+} = require('../utils/validators/wishlistValidator');
 
 const {
     addProductToWishlist,
@@ -23,6 +23,6 @@ router.route('/')
     .post(addProductToWishlist);
 
 router.route('/:productId')
-    .delete(deleteProductFromWishlist);
+    .delete(deleteWishlistProductValidator, deleteProductFromWishlist);
 
 module.exports = router;

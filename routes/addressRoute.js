@@ -1,8 +1,10 @@
 const express = require('express');
 
-// const {
-
-// } = require('../utils/validators/addressValidator');
+const {
+    updateAddressValidator,
+    createAddressValidator,
+    deleteAddressValidator
+} = require('../utils/validators/addressValidator');
 
 const {
     addAddress,
@@ -20,9 +22,9 @@ router.use(allowedTo('user'));
 
 router.route('/')
     .get(getAddresses)
-    .post(addAddress);
+    .post(createAddressValidator, addAddress);
 
 router.route('/:addressId')
-    .delete(deleteAddress);
+    .delete(deleteAddressValidator, deleteAddress);
 
 module.exports = router;

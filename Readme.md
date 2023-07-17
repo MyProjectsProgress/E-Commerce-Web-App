@@ -59,14 +59,14 @@ In this section, we will start working on enabling the admin to create coupons, 
 
 In this section, we will work on the order and payment process, whether the order will be paid in cash or upon delivery, or whether it will be paid through a payment card or an electronic wallet like Apple Pay or others. We will link it with the payment gateway and see what payment methods it provides, and we will make the payment process through it. We will also see how to check if the payment process was successful or not, and how to make an order in case the payment process was successful. We will talk in detail about cash payment and electronic payment. In the end, we will deploy the application on Heroku so that you can share it with the frontend or put the link in your portfolio.
 
-### 14- Security 🚧 Currently Working On It
+### 14- Security 🔄 Not Yet
 
 In this section, we will talk a bit about the security measures that you can use to secure your application.
 
 ### 15- Appendix ✅ Done
 
 In this section, I will add some lessons about JavaScript that you can refer back to if you want to brush up on them to help you while you're working on the course.
-### 16- Nest.JS 🔄 Not Yet
+### 16- Nest.JS 🚧 Currently Working On It
 
 In this section, we will add the enhancements that will be added to the course, in addition to recording any problems that arise and adding them to this section.
 

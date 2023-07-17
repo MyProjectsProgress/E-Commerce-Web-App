@@ -26,4 +26,6 @@ const copounSchema = new mongoose.Schema(
 // 2- CREATE MODEL 
 const copounModel = mongoose.model('Copoun', copounSchema);
 
+
+
 module.exports = copounModel;

@@ -21,7 +21,7 @@ dbConncetion();
 const app = express();
 
 // MIDDLEWARES
-app.use(express.json()); // to parse the posted request from string to json object
+app.use(express.json({ limit: '20kb' })); // to parse the posted request from string to json object
 app.use(express.static(path.join(__dirname, 'uploads'))); // to serve static files 'allows the files to be got from server'
 
 if (process.env.NODE_ENV === 'development') {
