@@ -2,7 +2,7 @@ const multer = require('multer');
 const ApiError = require('../utils/apiError');
 
 const multerOptions = () => {
-
+    // placeholder
     // Memory Storage Engine
     // Used when we need image processing, when image processing is a microservice we don't use it
     const multerStorage = multer.memoryStorage();

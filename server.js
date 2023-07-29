@@ -5,6 +5,10 @@ const path = require('path'); // core module that exists in node.js itself
 const express = require('express');  // for creating express application
 const dotenv = require('dotenv');    // for reading enviormenment variables
 const morgan = require('morgan');    // to print GET /api/v1/users 200 339.065 ms - 1218
+const rateLimit = require('express-rate-limit');
+const hpp = require('hpp');
+const mongoSanitize = require('express-mongo-sanitize');
+const xss = require('xss-clean');
 
 // PROJECT FILES
 dotenv.config({ path: 'config.env' });
@@ -23,11 +27,27 @@ const app = express();
 // MIDDLEWARES
 app.use(express.json({ limit: '20kb' })); // to parse the posted request from string to json object
 app.use(express.static(path.join(__dirname, 'uploads'))); // to serve static files 'allows the files to be got from server'
+app.use(hpp({ whitelist: ['price', 'sold', 'quantity', 'raingsQuantity', 'ratingsAverage'] })); // middleware to protect against HTTP parameter pollution attacks
 
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
     console.log(`${process.env.NODE_ENV}`);
 };
+
+// To remove data using these defaults: 
+app.use(mongoSanitize()); // jquery detection
+app.use(xss()); // sanitize the malicious input data
+
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per window (here, per 15 minutes)
+    standardHeaders: true, // retrun rate limit info in the rate  limit-* headers
+    legacyHeaders: false, // Disable the X-RateLimit-* headers
+    message: 'Too many requests from this IP',
+});
+
+// apply rate limiti on all routes
+app.use('/api', limiter);
 
 // MOUNT ROUTES
 mountRoutes(app);

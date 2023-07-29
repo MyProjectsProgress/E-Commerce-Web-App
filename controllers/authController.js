@@ -3,10 +3,12 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 
-const ApiError = require('../utils/apiError');
 const createToken = require('../utils/createToken');
-const User = require('../models/userModel');
 const sendEmail = require('../utils/sendEmail');
+const { sanitizeUser } = require('../utils/sanitizeData');
+const ApiError = require('../utils/apiError');
+const User = require('../models/userModel');
+
 
 // @desc   Signup
 // @route  GET /api/v1/auth/signup
@@ -23,7 +25,7 @@ exports.signup = asyncHandler(async (req, res, next) => {
     // token consists of three parts: headers, data, security checl jwt.io
     const token = await createToken(user._id);
 
-    res.status(201).json({ data: user, token });
+    res.status(201).json({ data: sanitizeUser(user), token });
 });
 
 // @desc   Login

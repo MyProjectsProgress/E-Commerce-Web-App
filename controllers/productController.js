@@ -5,7 +5,7 @@ const asyncHandler = require('express-async-handler');
 const factory = require('./zHandlersFactory');
 const { uploadMixOfImages } = require('../middlewares/uploadImageMiddleware');
 const Product = require('../models/productModel');
-
+// placeholder
 exports.uploadProductImages = uploadMixOfImages([
     {
         name: 'imageCover',
